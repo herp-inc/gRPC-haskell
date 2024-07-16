@@ -189,6 +189,8 @@ grpc_auth_metadata_processor* mk_auth_metadata_processor(
                   const grpc_metadata *md, size_t num_md,
                   grpc_process_auth_metadata_done_cb cb, void *user_data));
 
+void grpc_destroy_auth_metadata_processor(grpc_auth_metadata_processor* p);
+
 grpc_call_credentials* grpc_metadata_credentials_create_from_plugin_(
   grpc_metadata_credentials_plugin* plugin);
 

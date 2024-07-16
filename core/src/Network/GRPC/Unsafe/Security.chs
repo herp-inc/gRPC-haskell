@@ -302,6 +302,12 @@ foreign import ccall "dynamic"
 foreign import ccall "grpc_haskell.h mk_auth_metadata_processor"
   mkAuthMetadataProcessor :: FunPtr CAuthProcess -> IO AuthMetadataProcessor
 
+{#fun destroy_auth_metadata_processor as ^ {`AuthMetadataProcessor'} -> `()'#}
+
+withAuthMetadataProcessor :: FunPtr CAuthProcess -> (AuthMetadataProcessor -> IO a) -> IO a
+withAuthMetadataProcessor process =
+  bracket (mkAuthMetadataProcessor process) destroyAuthMetadataProcessor
+
 data AuthProcessorResult = AuthProcessorResult
   { resultConsumedMetadata :: MetadataMap
   -- ^ Metadata to remove from the request before passing to the handler.
@@ -347,8 +353,8 @@ setMetadataProcessor :: ServerCredentials -> ProcessMeta -> IO ()
 setMetadataProcessor creds processor = do
   let rawProcessor = convertProcessor processor
   rawProcessorPtr <- mkAuthProcess rawProcessor
-  metaProcessor <- mkAuthMetadataProcessor rawProcessorPtr
-  serverCredentialsSetAuthMetadataProcessor creds metaProcessor
+  withAuthMetadataProcessor rawProcessorPtr $ \metaProcessor ->
+    serverCredentialsSetAuthMetadataProcessor creds metaProcessor
 
 -- * Client-side metadata plugins
 
