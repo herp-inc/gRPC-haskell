@@ -1,7 +1,9 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE TupleSections #-}
 {-# LANGUAGE TypeFamilies #-}
-
+#if MIN_VERSION_GLASGOW_HASKELL(9,8,0,0)
+{-# OPTIONS -Wno-x-partial #-}
+#endif
 module Network.GRPC.LowLevel.GRPC.MetadataMap where
 
 import Data.ByteString (ByteString)
