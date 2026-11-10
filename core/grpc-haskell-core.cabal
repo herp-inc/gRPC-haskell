@@ -57,7 +57,7 @@ library
     Network.GRPC.LowLevel.Call
     Network.GRPC.LowLevel.Call.Unregistered
     Network.GRPC.LowLevel.Client
-  extra-libraries:
+  pkgconfig-depends:
       grpc
     , gpr
   includes:
